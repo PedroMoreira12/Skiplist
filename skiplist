@@ -116,3 +116,41 @@ class SkiplistList(BaseList):
             k += 1
             z = z // 2
         return k
+        
+def truncate(self, i):
+        u = self.sentinel
+        r = self.h
+        j = -1
+        h2 = None
+        h1 = None
+        while r >= 0:
+
+            while u.next[r] != None and j + u.length[r] < i:
+                if h1 == None:
+                    h1 = r
+                j += u.length[r]
+                u = u.next[r]
+
+            if u.next[r] != None:
+                if h2 == None:
+                    h2 = r
+                    w = self._new_node(None, h2)
+                    self._add(i, w)
+                u.next[r] = None
+                u.length[r] = 1
+
+            r = r - 1
+
+        if h1 == None:
+            h1 = 0
+        
+        skip_truncated = SkiplistList()
+        skip_truncated.sentinel = w
+        skip_truncated.h = h2
+        skip_truncated.n = self.n - i
+
+
+        self.h = h1
+        self.n = i
+
+        return skip_truncated
